@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Phone, Mail, MapPin, Facebook, Instagram, ShoppingCart, Menu as MenuIcon, X } from 'lucide-react';
+import { Phone, Mail, MapPin, Facebook, Instagram, ShoppingCart, Menu as MenuIcon, X, User as UserIcon } from 'lucide-react';
 import { toast } from 'sonner';
 
 export default function Home() {
@@ -105,7 +105,7 @@ export default function Home() {
       const result = await res.json();
       
       if (res.ok) {
-        toast.success('Terima kasih! Anda telah berlangganan newsletter kami');
+        toast.success('✅ Berhasil! Cek email Anda untuk konfirmasi newsletter');
         setEmail('');
       } else {
         toast.info(result.message || 'Email sudah terdaftar');
@@ -134,14 +134,20 @@ export default function Home() {
             
             {/* Desktop Menu */}
             <div className="hidden md:flex space-x-6">
-              <Link href="/" className="text-gray-700 hover:text-green-600 transition">Home</Link>
-              <Link href="/tentang" className="text-gray-700 hover:text-green-600 transition">Tentang Kami</Link>
-              <Link href="/menu" className="text-gray-700 hover:text-green-600 transition">Menu</Link>
-              <Link href="/cara-pemesanan" className="text-gray-700 hover:text-green-600 transition">Cara Pemesanan</Link>
-              <Link href="/kontak" className="text-gray-700 hover:text-green-600 transition">Kontak</Link>
+              <Link href="/" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }}>Home</Link>
+              <Link href="/tentang" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }}>Tentang Kami</Link>
+              <Link href="/menu" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }}>Menu</Link>
+              <Link href="/cara-pemesanan" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }}>Cara Pemesanan</Link>
+              <Link href="/kontak" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }}>Kontak</Link>
             </div>
             
             <div className="flex items-center gap-4">
+              {/* Login icon */}
+              <Link href="/login" aria-label="Login Pelanggan" className="hidden md:block">
+                <span className="inline-flex items-center justify-center w-10 h-10 rounded-full hover:bg-black/5 transition" title="Login">
+                  <UserIcon className="h-5 w-5" style={{ color: '#214929' }} />
+                </span>
+              </Link>
               <Link href="/pesan" className="hidden md:block">
                 <Button style={{ backgroundColor: '#214929' }} className="hover:opacity-90">
                   <ShoppingCart className="mr-2 h-4 w-4" />
@@ -163,11 +169,12 @@ export default function Home() {
           {mobileMenuOpen && (
             <div className="md:hidden mt-4 pb-4 border-t pt-4">
               <div className="flex flex-col space-y-3">
-                <Link href="/" className="text-gray-700 hover:text-green-600 transition" onClick={() => setMobileMenuOpen(false)}>Home</Link>
-                <Link href="/tentang" className="text-gray-700 hover:text-green-600 transition" onClick={() => setMobileMenuOpen(false)}>Tentang Kami</Link>
-                <Link href="/menu" className="text-gray-700 hover:text-green-600 transition" onClick={() => setMobileMenuOpen(false)}>Menu</Link>
-                <Link href="/cara-pemesanan" className="text-gray-700 hover:text-green-600 transition" onClick={() => setMobileMenuOpen(false)}>Cara Pemesanan</Link>
-                <Link href="/kontak" className="text-gray-700 hover:text-green-600 transition" onClick={() => setMobileMenuOpen(false)}>Kontak</Link>
+                <Link href="/login" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }} onClick={() => setMobileMenuOpen(false)}>Login</Link>
+                <Link href="/" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }} onClick={() => setMobileMenuOpen(false)}>Home</Link>
+                <Link href="/tentang" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }} onClick={() => setMobileMenuOpen(false)}>Tentang Kami</Link>
+                <Link href="/menu" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }} onClick={() => setMobileMenuOpen(false)}>Menu</Link>
+                <Link href="/cara-pemesanan" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }} onClick={() => setMobileMenuOpen(false)}>Cara Pemesanan</Link>
+                <Link href="/kontak" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }} onClick={() => setMobileMenuOpen(false)}>Kontak</Link>
                 <Link href="/pesan" onClick={() => setMobileMenuOpen(false)}>
                   <Button className="w-full" style={{ backgroundColor: '#214929' }}>
                     <ShoppingCart className="mr-2 h-4 w-4" />
@@ -335,7 +342,7 @@ export default function Home() {
           <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-8">
             <Card className="text-center hover:shadow-lg transition">
               <CardContent className="pt-6">
-                <Phone className="h-12 w-12 mx-auto mb-4 text-green-600" />
+                <Phone className="h-12 w-12 mx-auto mb-4" style={{ color: '#214929' }} />
                 <h3 className="font-semibold text-lg mb-2">Telepon</h3>
                 <a href="tel:+6281234567890" className="text-gray-600 hover:text-green-600">
                   +62 812-3456-7890
@@ -344,7 +351,7 @@ export default function Home() {
             </Card>
             <Card className="text-center hover:shadow-lg transition">
               <CardContent className="pt-6">
-                <Mail className="h-12 w-12 mx-auto mb-4 text-green-600" />
+                <Mail className="h-12 w-12 mx-auto mb-4" style={{ color: '#214929' }} />
                 <h3 className="font-semibold text-lg mb-2">Email</h3>
                 <a href="mailto:info@pisangijoevi.com" className="text-gray-600 hover:text-green-600">
                   info@pisangijoevi.com
@@ -353,7 +360,7 @@ export default function Home() {
             </Card>
             <Card className="text-center hover:shadow-lg transition">
               <CardContent className="pt-6">
-                <MapPin className="h-12 w-12 mx-auto mb-4 text-green-600" />
+                <MapPin className="h-12 w-12 mx-auto mb-4" style={{ color: '#214929' }} />
                 <h3 className="font-semibold text-lg mb-2">Lokasi</h3>
                 <p className="text-gray-600">Makassar, Sulawesi Selatan</p>
               </CardContent>

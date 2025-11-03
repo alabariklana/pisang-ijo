@@ -1,5 +1,4 @@
 import './globals.css'
-import { AuthProvider } from '@/contexts/AuthContext'
 import { Toaster } from 'sonner'
 import { Playfair_Display, Poppins } from 'next/font/google'
 
@@ -25,10 +24,8 @@ export default function RootLayout({ children }) {
   return (
     <html lang="id">
       <body className={`${playfairDisplay.variable} ${poppins.variable}`}>
-        <AuthProvider>
-          {children}
-          <Toaster position="top-center" richColors />
-        </AuthProvider>
+        {children}
+        <Toaster position="top-center" richColors />
       </body>
     </html>
   )
