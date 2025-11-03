@@ -16,6 +16,30 @@ async function connect() {
   return db;
 }
 
+export async function GET(request) {
+  try {
+    const db = await connect();
+    
+    // Fetch all orders, sorted by creation date (newest first)
+    const orders = await db.collection('orders')
+      .find({})
+      .sort({ createdAt: -1 })
+      .toArray();
+
+    // Convert MongoDB _id to string for JSON serialization
+    const ordersWithId = orders.map(order => ({
+      ...order,
+      _id: order._id.toString(),
+      id: order._id.toString()
+    }));
+
+    return NextResponse.json(ordersWithId, { status: 200 });
+  } catch (err) {
+    console.error('GET /api/orders error:', err);
+    return NextResponse.json({ error: 'Gagal memuat pesanan', detail: err?.message ?? null }, { status: 500 });
+  }
+}
+
 export async function POST(request) {
   try {
     const body = await request.json().catch(() => null);

@@ -22,9 +22,18 @@ export async function GET() {
     if (!MONGO_URL) {
       // fallback sample data when Mongo not configured
       return NextResponse.json({
-        ordersCount: 0,
-        productsCount: 0,
+        totalOrders: 0,
+        totalProducts: 0,
         totalRevenue: 0,
+        totalCustomers: 0,
+        ordersByStatus: {
+          pending: 0,
+          dikonfirmasi: 0,
+          dikirim: 0,
+          selesai: 0,
+          dibatalkan: 0
+        },
+        recentOrders: []
       });
     }
 
@@ -32,20 +41,52 @@ export async function GET() {
     const ordersColl = db.collection('orders');
     const productsColl = db.collection('products');
 
-    const [ordersCount, productsCount, revenueAgg] = await Promise.all([
-      ordersColl.countDocuments(),
-      productsColl.countDocuments(),
-      ordersColl.aggregate([
-        { $group: { _id: null, total: { $sum: { $ifNull: ['$totalAmount', 0] } } } }
-      ]).toArray()
-    ]);
-
-    const totalRevenue = (revenueAgg[0]?.total) ? revenueAgg[0].total : 0;
+    // Get all orders
+    const orders = await ordersColl.find({}).toArray();
+    
+    // Count total orders
+    const totalOrders = orders.length;
+    
+    // Count products
+    const totalProducts = await productsColl.countDocuments();
+    
+    // Calculate total revenue
+    const totalRevenue = orders.reduce((sum, order) => sum + (order.totalAmount || 0), 0);
+    
+    // Count unique customers
+    const uniqueCustomers = new Set(orders.map(order => order.customerEmail));
+    const totalCustomers = uniqueCustomers.size;
+    
+    // Count orders by status
+    const ordersByStatus = {
+      pending: orders.filter(o => o.status === 'pending').length,
+      dikonfirmasi: orders.filter(o => o.status === 'dikonfirmasi').length,
+      dikirim: orders.filter(o => o.status === 'dikirim').length,
+      selesai: orders.filter(o => o.status === 'selesai').length,
+      dibatalkan: orders.filter(o => o.status === 'dibatalkan').length
+    };
+    
+    // Get 5 most recent orders
+    const recentOrders = orders
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+      .slice(0, 5)
+      .map(order => ({
+        id: order._id.toString(),
+        orderNumber: order.orderNumber,
+        customerName: order.customerName,
+        customerEmail: order.customerEmail,
+        totalAmount: order.totalAmount,
+        status: order.status,
+        createdAt: order.createdAt
+      }));
 
     return NextResponse.json({
-      ordersCount,
-      productsCount,
-      totalRevenue
+      totalOrders,
+      totalProducts,
+      totalRevenue,
+      totalCustomers,
+      ordersByStatus,
+      recentOrders
     });
   } catch (err) {
     console.error('GET /api/statistics error', err);

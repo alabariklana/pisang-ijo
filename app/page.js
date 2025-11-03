@@ -118,9 +118,9 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-green-50 to-white">
+    <div className="min-h-screen" style={{ backgroundColor: '#EBDEC5' }}>
       {/* Navigation */}
-      <nav className="sticky top-0 z-50 bg-white shadow-md">
+      <nav className="sticky top-0 z-50 shadow-md" style={{ backgroundColor: '#EBDEC5' }}>
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <Link href="/" className="flex items-center space-x-2">
@@ -129,7 +129,7 @@ export default function Home() {
                 alt="Pisang Ijo Evi Logo"
                 className="h-12 w-auto"
               />
-               <span className="text-2xl font-bold text-green-700">Pisang Ijo Evi</span>
+               <span className="text-2xl font-bold" style={{ fontFamily: 'var(--font-playfair), serif', color: '#214929' }}>Pisang Ijo Evi</span>
             </Link>
             
             {/* Desktop Menu */}
@@ -143,7 +143,7 @@ export default function Home() {
             
             <div className="flex items-center gap-4">
               <Link href="/pesan" className="hidden md:block">
-                <Button className="bg-green-600 hover:bg-green-700">
+                <Button style={{ backgroundColor: '#214929' }} className="hover:opacity-90">
                   <ShoppingCart className="mr-2 h-4 w-4" />
                   Pesan Sekarang
                 </Button>
@@ -169,7 +169,7 @@ export default function Home() {
                 <Link href="/cara-pemesanan" className="text-gray-700 hover:text-green-600 transition" onClick={() => setMobileMenuOpen(false)}>Cara Pemesanan</Link>
                 <Link href="/kontak" className="text-gray-700 hover:text-green-600 transition" onClick={() => setMobileMenuOpen(false)}>Kontak</Link>
                 <Link href="/pesan" onClick={() => setMobileMenuOpen(false)}>
-                  <Button className="w-full bg-green-600 hover:bg-green-700">
+                  <Button className="w-full" style={{ backgroundColor: '#214929' }}>
                     <ShoppingCart className="mr-2 h-4 w-4" />
                     Pesan Sekarang
                   </Button>
@@ -180,57 +180,17 @@ export default function Home() {
         </div>
       </nav>
 
-      {/* Admin Login Section */}
-      <div className="bg-white border-b">
-        <div className="container mx-auto max-w-6xl px-4 py-2">
-          <div className="flex justify-end">
-            <Button
-              onClick={handleGoogleLogin}
-              disabled={loginLoading}
-              variant="outline"
-              className="text-green-600 border-green-600 hover:bg-green-50"
-            >
-              {loginLoading ? 'Memproses...' : 'Login Admin'}
-            </Button>
-          </div>
-        </div>
-      </div>
-
       {/* Hero Section */}
-      <section className="relative h-[500px] md:h-[600px] flex items-center justify-center overflow-hidden">
-        {/* Background image (behind everything) */}
-        <div
-          className="absolute inset-0"
-          style={{
-            zIndex: 0,
-            backgroundImage: "url('https://storage.googleapis.com/biolink_pisjo/images/pisang-ijo-makanan-khas-makassar.webp')",
-            backgroundSize: 'cover',
-            opacity: 0.5,
-            backgroundPosition: 'center',
-          }}
-        />
-
-        {/* Semi-transparent green overlay so the image is tinted but still visible */}
-        <div className="absolute inset-0" style={{ zIndex: 10, background: 'linear-gradient(90deg, rgba(2, 68, 49, 0.6), rgba(4,120,87,0.5))' }} />
-
-        {/* Subtle decorative pattern on top of image + overlay */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            zIndex: 12,
-            opacity: 0.3,
-            backgroundImage: `repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,.08) 35px, rgba(255,255,255,.08) 70px)`
-          }}
-        />
+      <section className="relative h-[500px] md:h-[600px] flex items-center justify-center overflow-hidden" style={{ backgroundColor: '#214929' }}>
  
         <div className="relative z-20 text-center text-white px-4 max-w-4xl">
           <h1
-            className="text-4xl md:text-6xl font-bold mb-4 font-serif"
-            style={{ textShadow: '0 6px 9px rgba(4, 49, 31, 0.65)' }}
+            className="text-4xl md:text-6xl font-bold mb-4"
+            style={{ fontFamily: 'var(--font-playfair), serif', textShadow: '0 6px 9px rgba(4, 49, 31, 0.65)' }}
           >
             Pisang Ijo Khas Makassar
           </h1>
-          <p className="text-base md:text-lg mb-8 font-serif">Kelezatan tradisional yang menyegarkan, dibuat dengan cinta dan resep turun temurun</p>
+          <p className="text-base md:text-lg mb-8" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#FCD900' }}>Kelezatan tradisional yang menyegarkan, dibuat dengan cinta dan resep turun temurun</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/menu">
               <Button size="lg" className="bg-white text-green-700 hover:bg-gray-100 w-full sm:w-auto">
@@ -247,11 +207,11 @@ export default function Home() {
       </section>
 
       {/* About Section */}
-      <section className="py-16 px-4 bg-white">
+      <section className="py-16 px-4" style={{ backgroundColor: '#EBDEC5' }}>
         <div className="container mx-auto max-w-6xl">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 className="text-3xl md:text-4xl font-bold text-green-700 mb-6">Tentang Pisang Ijo Evi</h2>
+              <h2 className="text-3xl md:text-4xl font-bold mb-6" style={{ color: '#214929' }}>Tentang Pisang Ijo Evi</h2>
               <p className="text-gray-700 text-base md:text-lg leading-relaxed mb-4">
                 Pisang Ijo Evi adalah usaha keluarga yang telah melayani masyarakat Makassar dengan es pisang ijo autentik selama bertahun-tahun. 
                 Kami menggunakan bahan-bahan pilihan dan resep tradisional yang telah diwariskan turun temurun.
@@ -261,7 +221,7 @@ export default function Home() {
                 memastikan rasa yang konsisten dan kualitas terbaik untuk pelanggan kami.
               </p>
               <Link href="/tentang">
-                <Button variant="outline" className="border-green-600 text-green-600 hover:bg-green-50">
+                <Button variant="outline" style={{ borderColor: '#214929', color: '#214929' }} className="hover:bg-opacity-10">
                   Selengkapnya
                 </Button>
               </Link>
@@ -281,10 +241,10 @@ export default function Home() {
 
       {/* Featured Products */}
       
-      <section className="py-16 px-4 bg-green-50">
+      <section className="py-16 px-4" style={{ backgroundColor: '#D4C4A8' }}>
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-green-700 mb-4">Menu Favorit Kami</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: '#214929' }}>Menu Favorit Kami</h2>
             <p className="text-gray-600 text-base md:text-lg">Pilihan es pisang ijo terbaik untuk Anda</p>
           </div>
           
@@ -305,17 +265,17 @@ export default function Home() {
                           </div>
                         )}
                       </div>
-                      <CardTitle className="text-green-700">{product.name}</CardTitle>
+                      <CardTitle style={{ color: '#214929' }}>{product.name}</CardTitle>
                       <CardDescription>{product.description}</CardDescription>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-2xl font-bold text-green-600">
+                      <p className="text-2xl font-bold" style={{ color: '#214929' }}>
                         Rp {(Number(product.price) || 0).toLocaleString('id-ID')}
                       </p>
                     </CardContent>
                     <CardFooter>
                       <Link href={`/menu#${product.slug ?? key}`} className="w-full">
-                        <Button className="w-full bg-green-600 hover:bg-green-700">Lihat Detail</Button>
+                        <Button className="w-full" style={{ backgroundColor: '#214929' }}>Lihat Detail</Button>
                       </Link>
                     </CardFooter>
                   </Card>
@@ -336,7 +296,7 @@ export default function Home() {
           {products.length > 0 && (
             <div className="text-center mt-12">
               <Link href="/menu">
-                <Button size="lg" className="bg-green-600 hover:bg-green-700">
+                <Button size="lg" style={{ backgroundColor: '#214929' }}>
                   Lihat Semua Menu
                 </Button>
               </Link>
@@ -346,10 +306,10 @@ export default function Home() {
       </section>
 
       {/* Newsletter Section */}
-      <section className="py-16 px-4 bg-green-700 text-white">
+      <section className="py-16 px-4 text-white" style={{ backgroundColor: '#214929' }}>
         <div className="container mx-auto max-w-4xl text-center">
           <h2 className="text-2xl md:text-3xl font-bold mb-4">Dapatkan Promo & Update Terbaru</h2>
-          <p className="text-green-100 mb-8">Berlangganan newsletter kami dan dapatkan info promo menarik</p>
+          <p className="mb-8" style={{ color: '#FCD900' }}>Berlangganan newsletter kami dan dapatkan info promo menarik</p>
           <form onSubmit={handleNewsletterSubscribe} className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
             <Input 
               type="email" 
@@ -367,10 +327,10 @@ export default function Home() {
       </section>
 
       {/* Contact Info Section */}
-      <section className="py-16 px-4 bg-white">
+      <section className="py-16 px-4" style={{ backgroundColor: '#EBDEC5' }}>
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-green-700 mb-4">Hubungi Kami</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: '#214929' }}>Hubungi Kami</h2>
           </div>
           <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-8">
             <Card className="text-center hover:shadow-lg transition">
@@ -403,7 +363,7 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-green-900 text-white py-8 px-4">
+      <footer className="text-white py-8 px-4" style={{ backgroundColor: '#1a3a22' }}>
         <div className="container mx-auto max-w-6xl">
           <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-8 mb-8">
             <div>

@@ -302,9 +302,10 @@ export default function DashboardHome() {
             {stats?.recentOrders && stats.recentOrders.length > 0 ? (
               <div className="space-y-4">
                 {stats.recentOrders.map((order) => (
-                  <div 
+                  <Link 
                     key={order.id} 
-                    className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50 transition"
+                    href="/dashboard/orders"
+                    className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50 transition cursor-pointer"
                   >
                     <div className="flex-1">
                       <p className="font-medium text-gray-900">
@@ -335,7 +336,7 @@ export default function DashboardHome() {
                         {order.status}
                       </span>
                     </div>
-                  </div>
+                  </Link>
                 ))}
               </div>
             ) : (
