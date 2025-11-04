@@ -12,6 +12,7 @@ import { toast } from 'sonner';
 
 export default function Home() {
   const [products, setProducts] = useState([]);
+  const [blogPosts, setBlogPosts] = useState([]);
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -44,6 +45,7 @@ export default function Home() {
 
   useEffect(() => {
     fetchProducts();
+    fetchBlogPosts();
   }, []);
 
   const fetchProducts = async () => {
@@ -77,6 +79,34 @@ export default function Home() {
       console.error('Error fetching products:', error);
       toast.error('Gagal memuat produk. Silakan coba lagi nanti.');
       setProducts([]);
+    }
+  };
+
+  const fetchBlogPosts = async () => {
+    try {
+      const res = await fetch('/api/blog?status=published&limit=3');
+      if (res.ok) {
+        const data = await res.json();
+        setBlogPosts(data.posts || []);
+      }
+    } catch (error) {
+      console.error('Error fetching blog posts:', error);
+      setBlogPosts([]);
+    }
+  };
+
+  const stripMarkdown = (text = '') => {
+    try {
+      return text
+        .replace(/\!\[[^\]]*\]\([^)]*\)/g, '')
+        .replace(/\[[^\]]*\]\([^)]*\)/g, '$1')
+        .replace(/[`*_~>#-]/g, '')
+        .replace(/^\s*\d+\.\s+/gm, '')
+        .replace(/^\s*[-*+]\s+/gm, '')
+        .replace(/\s+/g, ' ')
+        .trim();
+    } catch {
+      return text;
     }
   };
 
@@ -137,6 +167,7 @@ export default function Home() {
               <Link href="/" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }}>Home</Link>
               <Link href="/tentang" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }}>Tentang Kami</Link>
               <Link href="/menu" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }}>Menu</Link>
+              <Link href="/blog" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }}>Blog</Link>
               <Link href="/cara-pemesanan" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }}>Cara Pemesanan</Link>
               <Link href="/kontak" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }}>Kontak</Link>
             </div>
@@ -173,6 +204,7 @@ export default function Home() {
                 <Link href="/" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }} onClick={() => setMobileMenuOpen(false)}>Home</Link>
                 <Link href="/tentang" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }} onClick={() => setMobileMenuOpen(false)}>Tentang Kami</Link>
                 <Link href="/menu" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }} onClick={() => setMobileMenuOpen(false)}>Menu</Link>
+                <Link href="/blog" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }} onClick={() => setMobileMenuOpen(false)}>Blog</Link>
                 <Link href="/cara-pemesanan" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }} onClick={() => setMobileMenuOpen(false)}>Cara Pemesanan</Link>
                 <Link href="/kontak" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }} onClick={() => setMobileMenuOpen(false)}>Kontak</Link>
                 <Link href="/pesan" onClick={() => setMobileMenuOpen(false)}>
@@ -312,6 +344,86 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Blog Section */}
+      {blogPosts.length > 0 && (
+        <section className="py-16 px-4" style={{ backgroundColor: '#EBDEC5' }}>
+          <div className="container mx-auto max-w-6xl">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: '#214929', fontFamily: 'var(--font-playfair)' }}>
+                📰 Artikel Terbaru
+              </h2>
+              <p className="text-gray-600 max-w-2xl mx-auto">
+                Baca artikel, resep, tips & trik seputar kuliner tradisional Makassar
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-8">
+              {blogPosts.map((post) => (
+                <Link
+                  key={post._id}
+                  href={`/blog/${post.slug}`}
+                  className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow"
+                >
+                  {/* Featured Image */}
+                  {post.featuredImage ? (
+                    <div className="relative h-48 overflow-hidden">
+                      <img
+                        src={post.featuredImage}
+                        alt={post.title}
+                        className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+                      />
+                      <div
+                        className="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-medium"
+                        style={{ backgroundColor: '#FCD900', color: '#214929' }}
+                      >
+                        {post.category}
+                      </div>
+                    </div>
+                  ) : (
+                    <div
+                      className="h-48 flex items-center justify-center"
+                      style={{ backgroundColor: '#EBDEC5' }}
+                    >
+                      <span className="text-6xl">📝</span>
+                    </div>
+                  )}
+
+                  {/* Content */}
+                  <div className="p-6">
+                    <h3
+                      className="text-xl font-bold mb-2 line-clamp-2 hover:underline"
+                      style={{ color: '#214929', fontFamily: 'var(--font-playfair)' }}
+                    >
+                      {post.title}
+                    </h3>
+
+                    <p className="text-gray-600 text-sm mb-4 line-clamp-3">
+                      {(post.excerpt || stripMarkdown(post.content)).substring(0, 120)}...
+                    </p>
+
+                    {/* Meta Info */}
+                    <div className="flex items-center justify-between text-xs text-gray-500">
+                      <span>{new Date(post.publishedAt || post.createdAt).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+                      <span className="font-medium" style={{ color: '#214929' }}>
+                        Baca →
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+
+            <div className="text-center mt-12">
+              <Link href="/blog">
+                <Button size="lg" style={{ backgroundColor: '#214929', color: 'white' }}>
+                  Lihat Semua Artikel
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Newsletter Section */}
       <section className="py-16 px-4 text-white" style={{ backgroundColor: '#214929' }}>
         <div className="container mx-auto max-w-4xl text-center">
@@ -383,6 +495,7 @@ export default function Home() {
                 <li><Link href="/" className="text-green-200 hover:text-white transition">Home</Link></li>
                 <li><Link href="/tentang" className="text-green-200 hover:text-white transition">Tentang Kami</Link></li>
                 <li><Link href="/menu" className="text-green-200 hover:text-white transition">Menu</Link></li>
+                <li><Link href="/blog" className="text-green-200 hover:text-white transition">Blog</Link></li>
                 <li><Link href="/pesan" className="text-green-200 hover:text-white transition">Pesan</Link></li>
               </ul>
             </div>

@@ -16,7 +16,8 @@ import {
   Clock,
   CheckCircle,
   Truck,
-  Mail
+  Mail,
+  FileText
 } from 'lucide-react';
 import { toast } from 'sonner';
 import Link from 'next/link';
@@ -258,7 +259,7 @@ export default function DashboardHome() {
             <CardDescription>Kelola bisnis Anda dengan mudah</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
               <Link href="/dashboard/products" className="block">
                 <Button variant="outline" className="w-full h-20 flex flex-col gap-2">
                   <Package className="w-6 h-6" />
@@ -275,6 +276,12 @@ export default function DashboardHome() {
                 <Button variant="outline" className="w-full h-20 flex flex-col gap-2">
                   <Users className="w-6 h-6" />
                   <span className="text-sm">Kelola Member</span>
+                </Button>
+              </Link>
+              <Link href="/dashboard/blog" className="block">
+                <Button variant="outline" className="w-full h-20 flex flex-col gap-2">
+                  <FileText className="w-6 h-6" />
+                  <span className="text-sm">Blog</span>
                 </Button>
               </Link>
               <Link href="/dashboard/newsletter" className="block">

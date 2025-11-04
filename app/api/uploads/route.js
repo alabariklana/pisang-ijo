@@ -21,8 +21,9 @@ export async function POST(request) {
 
     await fs.writeFile(dest, buf);
 
-    const imageUrl = `/uploads/${filename}`;
-    return NextResponse.json({ imageUrl });
+  const imageUrl = `/uploads/${filename}`;
+  // Return both keys for compatibility with clients expecting `url`
+  return NextResponse.json({ success: true, url: imageUrl, imageUrl, filename });
   } catch (err) {
     console.error('Upload error:', err);
     return NextResponse.json({ error: 'Upload failed' }, { status: 500 });

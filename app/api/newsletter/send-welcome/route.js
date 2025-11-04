@@ -1,4 +1,4 @@
-import brevo from '@getbrevo/brevo';
+import * as brevo from '@getbrevo/brevo';
 
 export async function POST(req) {
   try {
@@ -18,10 +18,8 @@ export async function POST(req) {
     }
 
     const apiInstance = new brevo.TransactionalEmailsApi();
-    apiInstance.setApiKey(
-      brevo.TransactionalEmailsApiApiKeys.apiKey,
-      process.env.BREVO_API_KEY
-    );
+    const apiKey = apiInstance.authentications['apiKey'];
+    apiKey.apiKey = process.env.BREVO_API_KEY;
 
     const sendSmtpEmail = new brevo.SendSmtpEmail();
     sendSmtpEmail.subject = "✅ Konfirmasi - Subscribe Newsletter Pisang Ijo Evi Berhasil!";

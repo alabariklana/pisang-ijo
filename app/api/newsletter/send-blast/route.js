@@ -1,4 +1,4 @@
-import brevo from '@getbrevo/brevo';
+import * as brevo from '@getbrevo/brevo';
 import { connectToDatabase } from '@/lib/mongodb';
 
 export async function POST(req) {
@@ -34,10 +34,8 @@ export async function POST(req) {
     }
 
     const apiInstance = new brevo.TransactionalEmailsApi();
-    apiInstance.setApiKey(
-      brevo.TransactionalEmailsApiApiKeys.apiKey,
-      process.env.BREVO_API_KEY
-    );
+    const apiKey = apiInstance.authentications['apiKey'];
+    apiKey.apiKey = process.env.BREVO_API_KEY;
 
     let successCount = 0;
     let failCount = 0;
