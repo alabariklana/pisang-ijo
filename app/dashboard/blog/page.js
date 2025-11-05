@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Eye, Edit, Trash2, Plus, Search, Filter, Download } from 'lucide-react';
+import { Eye, Edit, Trash2, Plus, Search, Filter, Download, Home } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
@@ -113,6 +113,16 @@ export default function BlogManagementPage() {
     <div className="p-8" style={{ fontFamily: 'var(--font-poppins)' }}>
       {/* Header */}
       <div className="mb-8">
+        <div className="flex items-center gap-4 mb-4">
+          <Button
+            onClick={() => router.push('/dashboard')}
+            variant="outline"
+            className="flex items-center gap-2"
+          >
+            <Home size={18} />
+            <span>Dashboard</span>
+          </Button>
+        </div>
         <h1 className="text-3xl font-bold mb-2" style={{ color: '#214929', fontFamily: 'var(--font-playfair)' }}>
           Blog Management
         </h1>

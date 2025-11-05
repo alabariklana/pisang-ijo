@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import { ArrowLeft, Save, Eye, Upload, X, Trash2 } from 'lucide-react';
+import { ArrowLeft, Save, Eye, Upload, X, Trash2, Home } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
@@ -104,15 +104,46 @@ export default function EditBlogPage() {
   };
 
   const addKeyword = () => {
-    if (keywordInput.trim() && !formData.seo.keywords.includes(keywordInput.trim())) {
+    if (!keywordInput.trim()) return;
+
+    // Split by comma and process each keyword
+    const newKeywords = keywordInput
+      .split(',')
+      .map(k => k.trim())
+      .filter(k => k && !formData.seo.keywords.includes(k));
+
+    if (newKeywords.length > 0) {
       setFormData(prev => ({
         ...prev,
         seo: {
           ...prev.seo,
-          keywords: [...prev.seo.keywords, keywordInput.trim()]
+          keywords: [...prev.seo.keywords, ...newKeywords]
         }
       }));
       setKeywordInput('');
+    }
+  };
+
+  const handleKeywordInputChange = (value) => {
+    // Auto-add when comma is detected
+    if (value.includes(',')) {
+      const parts = value.split(',');
+      const toAdd = parts.slice(0, -1).map(k => k.trim()).filter(k => k && !formData.seo.keywords.includes(k));
+      
+      if (toAdd.length > 0) {
+        setFormData(prev => ({
+          ...prev,
+          seo: {
+            ...prev.seo,
+            keywords: [...prev.seo.keywords, ...toAdd]
+          }
+        }));
+      }
+      
+      // Keep the last part (after last comma) in input
+      setKeywordInput(parts[parts.length - 1].trim());
+    } else {
+      setKeywordInput(value);
     }
   };
 
@@ -267,6 +298,14 @@ export default function EditBlogPage() {
       {/* Header - same as new page but with delete button */}
       <div className="mb-8 flex items-center justify-between">
         <div className="flex items-center gap-4">
+          <Button
+            onClick={() => router.push('/dashboard')}
+            variant="outline"
+            style={{ borderColor: '#214929', color: '#214929' }}
+          >
+            <Home size={16} className="mr-2" />
+            Dashboard
+          </Button>
           <Button
             onClick={() => router.back()}
             variant="outline"
@@ -556,9 +595,9 @@ export default function EditBlogPage() {
                   <Input
                     type="text"
                     value={keywordInput}
-                    onChange={(e) => setKeywordInput(e.target.value)}
+                    onChange={(e) => handleKeywordInputChange(e.target.value)}
                     onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addKeyword())}
-                    placeholder="Tambah keyword..."
+                    placeholder="Tambah keyword (pisahkan dengan koma)..."
                   />
                   <Button
                     onClick={addKeyword}
@@ -568,6 +607,7 @@ export default function EditBlogPage() {
                     Tambah
                   </Button>
                 </div>
+                <p className="text-xs text-gray-500 mb-2">💡 Ketik beberapa keyword sekaligus, pisahkan dengan koma. Contoh: resep pisang ijo, kuliner makassar, dessert indonesia</p>
                 <div className="flex flex-wrap gap-2">
                   {formData.seo.keywords.map(keyword => (
                     <span

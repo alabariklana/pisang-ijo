@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { ShoppingCart, ArrowLeft, Menu as MenuIcon, X } from 'lucide-react';
+import Footer from '@/components/Footer';
 
 export default function MenuPage() {
   const [products, setProducts] = useState([]);
@@ -45,28 +46,31 @@ export default function MenuPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-green-50 to-white">
       {/* Navigation */}
-      <nav className="sticky top-0 z-50 bg-white shadow-md">
+      <nav className="sticky top-0 z-50" style={{ backgroundColor: '#EBDEC5', boxShadow: '0 4px 20px rgba(212, 175, 55, 0.15)' }}>
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <Link href="/" className="flex items-center space-x-2">
-              <div className="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center">
-                <span className="text-white text-2xl font-bold">PJ</span>
-              </div>
-              <span className="text-2xl font-bold text-green-700">Pisang Ijo Evi</span>
+              <img
+                src="https://storage.googleapis.com/biolink_pisjo/images/kekg4cgf_logo%20pisjo%20pendek.webp"
+                alt="Pisang Ijo Evi Logo"
+                className="h-12 w-auto"
+                style={{ filter: 'drop-shadow(0 2px 4px rgba(212, 175, 55, 0.3))' }}
+              />
+              <span className="text-2xl font-bold" style={{ fontFamily: 'var(--font-playfair), serif', color: '#214929', textShadow: '0 1px 2px rgba(212, 175, 55, 0.2)' }}>Pisang Ijo Evi</span>
             </Link>
             
             {/* Desktop Menu */}
             <div className="hidden md:flex space-x-6">
-              <Link href="/" className="text-gray-700 hover:text-green-600 transition">Home</Link>
-              <Link href="/tentang" className="text-gray-700 hover:text-green-600 transition">Tentang Kami</Link>
-              <Link href="/menu" className="text-green-600 font-semibold">Menu</Link>
-              <Link href="/cara-pemesanan" className="text-gray-700 hover:text-green-600 transition">Cara Pemesanan</Link>
-              <Link href="/kontak" className="text-gray-700 hover:text-green-600 transition">Kontak</Link>
+              <Link href="/" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }}>Home</Link>
+              <Link href="/tentang" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }}>Tentang Kami</Link>
+              <Link href="/menu" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }}>Menu</Link>
+              <Link href="/blog" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }}>Blog</Link>
+              <Link href="/kontak" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }}>Kontak</Link>
             </div>
             
             <div className="flex items-center gap-4">
               <Link href="/pesan" className="hidden md:block">
-                <Button className="bg-green-600 hover:bg-green-700">
+                <Button style={{ backgroundColor: '#214929', boxShadow: '0 4px 12px rgba(212, 175, 55, 0.3)' }} className="hover:opacity-90 transition-all hover:shadow-lg">
                   <ShoppingCart className="mr-2 h-4 w-4" />
                   Pesan Sekarang
                 </Button>
@@ -74,7 +78,8 @@ export default function MenuPage() {
               
               {/* Mobile Menu Button */}
               <button 
-                className="md:hidden text-gray-700"
+                className="md:hidden"
+                style={{ color: '#214929' }}
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               >
                 {mobileMenuOpen ? <X className="h-6 w-6" /> : <MenuIcon className="h-6 w-6" />}
@@ -86,13 +91,13 @@ export default function MenuPage() {
           {mobileMenuOpen && (
             <div className="md:hidden mt-4 pb-4 border-t pt-4">
               <div className="flex flex-col space-y-3">
-                <Link href="/" className="text-gray-700 hover:text-green-600 transition" onClick={() => setMobileMenuOpen(false)}>Home</Link>
-                <Link href="/tentang" className="text-gray-700 hover:text-green-600 transition" onClick={() => setMobileMenuOpen(false)}>Tentang Kami</Link>
-                <Link href="/menu" className="text-green-600 font-semibold" onClick={() => setMobileMenuOpen(false)}>Menu</Link>
-                <Link href="/cara-pemesanan" className="text-gray-700 hover:text-green-600 transition" onClick={() => setMobileMenuOpen(false)}>Cara Pemesanan</Link>
-                <Link href="/kontak" className="text-gray-700 hover:text-green-600 transition" onClick={() => setMobileMenuOpen(false)}>Kontak</Link>
+                <Link href="/" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }} onClick={() => setMobileMenuOpen(false)}>Home</Link>
+                <Link href="/tentang" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }} onClick={() => setMobileMenuOpen(false)}>Tentang Kami</Link>
+                <Link href="/menu" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }} onClick={() => setMobileMenuOpen(false)}>Menu</Link>
+                <Link href="/blog" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }} onClick={() => setMobileMenuOpen(false)}>Blog</Link>
+                <Link href="/kontak" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }} onClick={() => setMobileMenuOpen(false)}>Kontak</Link>
                 <Link href="/pesan" onClick={() => setMobileMenuOpen(false)}>
-                  <Button className="w-full bg-green-600 hover:bg-green-700">
+                  <Button className="w-full" style={{ backgroundColor: '#214929' }}>
                     <ShoppingCart className="mr-2 h-4 w-4" />
                     Pesan Sekarang
                   </Button>
@@ -104,14 +109,20 @@ export default function MenuPage() {
       </nav>
 
       {/* Hero Section */}
-      <section className="py-12 md:py-16 px-4 bg-green-700 text-white">
+      <section className="py-12 md:py-16 px-4 text-white" style={{ 
+        background: 'linear-gradient(135deg, #214929 0%, #2a5f35 100%)',
+        boxShadow: 'inset 0 -4px 20px rgba(212, 175, 55, 0.15)'
+      }}>
         <div className="container mx-auto max-w-6xl">
-          <Link href="/" className="inline-flex items-center text-green-200 hover:text-white mb-4 transition">
+          <Link href="/" className="inline-flex items-center mb-4 transition hover:opacity-80" style={{ color: '#F4E4C1' }}>
             <ArrowLeft className="mr-2 h-4 w-4" />
             Kembali ke Home
           </Link>
-          <h1 className="text-3xl md:text-5xl font-bold mb-4">Menu Kami</h1>
-          <p className="text-lg md:text-xl text-green-100">Pilihan Es Pisang Ijo terbaik untuk Anda dan keluarga</p>
+          <h1 className="text-3xl md:text-5xl font-bold mb-4" style={{ 
+            fontFamily: 'var(--font-playfair), serif',
+            textShadow: '0 2px 4px rgba(212, 175, 55, 0.3)'
+          }}>Menu Kami</h1>
+          <p className="text-lg md:text-xl" style={{ color: '#F4E4C1' }}>Pilihan Es Pisang Ijo terbaik untuk Anda dan keluarga</p>
         </div>
       </section>
 
@@ -129,9 +140,12 @@ export default function MenuPage() {
                 const key = product._id ?? product.id ?? product.slug ?? `${product.name}-${idx}`;
                 const imgSrc = product.imageUrl ?? product.image ?? (Array.isArray(product.photos) ? product.photos[0] : null);
                 return (
-                  <Card key={String(key)} className="hover:shadow-xl transition" id={product.slug ?? key}>
+                  <Card key={String(key)} className="transition-all hover:scale-105" style={{ 
+                    boxShadow: '0 4px 16px rgba(212, 175, 55, 0.2), 0 2px 8px rgba(33, 73, 41, 0.1)',
+                    border: '1px solid rgba(212, 175, 55, 0.1)'
+                  }} id={product.slug ?? key}>
                     <CardHeader>
-                      <div className="h-48 md:h-64 bg-gray-200 rounded-md mb-4 overflow-hidden">
+                      <div className="h-48 md:h-64 bg-gray-200 rounded-md mb-4 overflow-hidden" style={{ boxShadow: 'inset 0 2px 8px rgba(212, 175, 55, 0.15)' }}>
                         {imgSrc ? (
                           <img src={imgSrc} alt={product.name} className="w-full h-full object-cover" />
                         ) : (
@@ -140,16 +154,21 @@ export default function MenuPage() {
                           </div>
                         )}
                       </div>
-                      <CardTitle className="text-green-700 text-lg md:text-xl">{product.name}</CardTitle>
+                      <CardTitle className="text-lg md:text-xl" style={{ color: '#214929' }}>{product.name}</CardTitle>
                       <CardDescription className="text-sm">{product.description}</CardDescription>
                     </CardHeader>
                     <CardContent>
                       <div className="flex justify-between items-center flex-wrap gap-2">
-                        <p className="text-xl md:text-2xl font-bold text-green-600">
+                        <p className="text-xl md:text-2xl font-bold" style={{ 
+                          background: 'linear-gradient(135deg, #214929 0%, #2a5f35 100%)',
+                          WebkitBackgroundClip: 'text',
+                          WebkitTextFillColor: 'transparent',
+                          backgroundClip: 'text'
+                        }}>
                           Rp {(Number(product.price) || 0).toLocaleString('id-ID')}
                         </p>
                         {product.available ? (
-                          <span className="text-xs md:text-sm text-green-600 bg-green-100 px-2 py-1 rounded">Tersedia</span>
+                          <span className="text-xs md:text-sm px-2 py-1 rounded" style={{ color: '#214929', backgroundColor: '#F4E4C1' }}>Tersedia</span>
                         ) : (
                           <span className="text-xs md:text-sm text-red-600 bg-red-100 px-2 py-1 rounded">Habis</span>
                         )}
@@ -157,12 +176,16 @@ export default function MenuPage() {
                     </CardContent>
                     <CardFooter className="flex gap-2">
                       <Link href={`/menu/${product.slug ?? key}`} className="flex-1">
-                        <Button variant="outline" className="w-full border-green-600 text-green-600 hover:bg-green-50">
+                        <Button variant="outline" className="w-full" style={{ 
+                          borderColor: '#D4AF37',
+                          color: '#214929',
+                          borderWidth: '2px'
+                        }}>
                           Detail
                         </Button>
                       </Link>
                       <Link href="/pesan" className="flex-1">
-                        <Button className="w-full bg-green-600 hover:bg-green-700" disabled={!product.available}>
+                        <Button className="w-full" style={{ backgroundColor: '#214929' }} disabled={!product.available}>
                           {product.available ? 'Pesan' : 'Habis'}
                         </Button>
                       </Link>
@@ -189,7 +212,11 @@ export default function MenuPage() {
       {products.length > 0 && (
         <section className="py-12 px-4 bg-green-50">
           <div className="container mx-auto max-w-4xl text-center">
-            <h2 className="text-2xl md:text-3xl font-bold text-green-700 mb-4">
+            <h2 className="text-2xl md:text-3xl font-bold mb-4" style={{ 
+              color: '#214929',
+              fontFamily: 'var(--font-playfair), serif',
+              textShadow: '0 2px 4px rgba(212, 175, 55, 0.15)'
+            }}>
               Siap Memesan?
             </h2>
             <p className="text-gray-600 mb-6">
@@ -197,13 +224,21 @@ export default function MenuPage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/pesan">
-                <Button size="lg" className="bg-green-600 hover:bg-green-700 w-full sm:w-auto">
+                <Button size="lg" className="w-full sm:w-auto" style={{ 
+                  backgroundColor: '#214929',
+                  boxShadow: '0 4px 16px rgba(212, 175, 55, 0.35)'
+                }}>
                   <ShoppingCart className="mr-2 h-5 w-5" />
                   Pesan Sekarang
                 </Button>
               </Link>
               <Link href="/kontak">
-                <Button size="lg" variant="outline" className="border-green-600 text-green-600 hover:bg-green-50 w-full sm:w-auto">
+                <Button size="lg" variant="outline" className="w-full sm:w-auto" style={{ 
+                  borderColor: '#D4AF37',
+                  color: '#214929',
+                  boxShadow: '0 3px 10px rgba(212, 175, 55, 0.2)',
+                  borderWidth: '2px'
+                }}>
                   Hubungi Kami
                 </Button>
               </Link>
@@ -213,43 +248,7 @@ export default function MenuPage() {
       )}
 
       {/* Footer */}
-      <footer className="bg-green-900 text-white py-8 px-4">
-        <div className="container mx-auto max-w-6xl">
-          <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-8 mb-8">
-            <div>
-              <h3 className="font-bold text-lg mb-4">Pisang Ijo Evi</h3>
-              <p className="text-green-200 text-sm">Es Pisang Ijo Khas Makassar yang lezat dan menyegarkan</p>
-            </div>
-            <div>
-              <h3 className="font-bold text-lg mb-4">Menu</h3>
-              <ul className="space-y-2 text-sm">
-                <li><Link href="/" className="text-green-200 hover:text-white transition">Home</Link></li>
-                <li><Link href="/tentang" className="text-green-200 hover:text-white transition">Tentang Kami</Link></li>
-                <li><Link href="/menu" className="text-green-200 hover:text-white transition">Menu</Link></li>
-                <li><Link href="/pesan" className="text-green-200 hover:text-white transition">Pesan</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-bold text-lg mb-4">Informasi</h3>
-              <ul className="space-y-2 text-sm">
-                <li><Link href="/cara-pemesanan" className="text-green-200 hover:text-white transition">Cara Pemesanan</Link></li>
-                <li><Link href="/kontak" className="text-green-200 hover:text-white transition">Kontak</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-bold text-lg mb-4">Kontak</h3>
-              <ul className="space-y-2 text-sm text-green-200">
-                <li>Makassar, Sulawesi Selatan</li>
-                <li>+62 812-3456-7890</li>
-                <li>info@pisangijoevi.com</li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-green-800 pt-6 text-center text-sm text-green-200">
-            <p>&copy; 2025 Pisang Ijo Evi. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

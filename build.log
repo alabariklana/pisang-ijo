@@ -1,0 +1,18 @@
+Creating temporary archive of 83 file(s) totalling 2.5 MiB before compression.
+Some files were not included in the source upload.
+
+Check the gcloud log [C:\Users\HP\AppData\Roaming\gcloud\logs\2025.11.04\19.35.51.513541.log] to see which files and the contents of the
+default gcloudignore file used (see `$ gcloud topic gcloudignore` to learn
+more).
+
+Uploading tarball of [.] to [gs://certain-haiku-475408-f6_cloudbuild/source/1762256152.486305-84c368161a0f48b9a8ea28322a16044a.tgz]
+Created [https://cloudbuild.googleapis.com/v1/projects/certain-haiku-475408-f6/locations/global/builds/0257a872-60f4-45ba-98ee-1bff023d087e].
+Logs are available at [ https://console.cloud.google.com/cloud-build/builds/0257a872-60f4-45ba-98ee-1bff023d087e?project=403206662227 ].
+
+gcloud builds submit only displays logs from Cloud Storage. To view logs from Cloud Logging, run:
+gcloud beta builds submit
+
+Waiting for build to complete. Polling interval: 1 second(s).
+
+BUILD FAILURE: Build step failure: build step 0 "gcr.io/cloud-builders/docker" failed: step exited with non-zero status: 1
+ERROR: (gcloud.builds.submit) build 0257a872-60f4-45ba-98ee-1bff023d087e completed with status "FAILURE"

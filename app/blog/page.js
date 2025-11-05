@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { Search, Calendar, User, Tag } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { connectToDatabase } from '@/lib/mongodb';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 
 export const metadata = {
   title: 'Blog - Pisang Ijo Evi | Resep, Tips & Cerita Kuliner',
@@ -42,10 +44,11 @@ function stripMarkdown(text = '') {
 
 async function getBlogPosts(searchParams) {
   try {
-    const page = Number(searchParams?.page || 1);
-    const limit = Number(searchParams?.limit || 12);
-    const category = searchParams?.category || '';
-    const search = searchParams?.search || '';
+    const resolvedParams = await searchParams;
+    const page = Number(resolvedParams?.page || 1);
+    const limit = Number(resolvedParams?.limit || 12);
+    const category = resolvedParams?.category || '';
+    const search = resolvedParams?.search || '';
     const skip = (page - 1) * limit;
 
     const { db } = await connectToDatabase();
@@ -115,6 +118,7 @@ async function getCategories() {
 }
 
 export default async function BlogPage({ searchParams }) {
+  const resolvedSearchParams = await searchParams;
   const { posts, pagination } = await getBlogPosts(searchParams);
   const { categories } = await getCategories();
 
@@ -128,6 +132,9 @@ export default async function BlogPage({ searchParams }) {
 
   return (
     <div style={{ fontFamily: 'var(--font-poppins)', backgroundColor: '#EBDEC5', minHeight: '100vh' }}>
+      {/* Navbar */}
+      <Navbar />
+
       {/* Hero Section */}
       <div className="py-20 px-4" style={{ backgroundColor: '#214929' }}>
         <div className="max-w-6xl mx-auto text-center">
@@ -147,11 +154,11 @@ export default async function BlogPage({ searchParams }) {
             <Link
               href="/blog"
               className={`px-4 py-2 rounded-full transition-colors ${
-                !searchParams.category
+                !resolvedSearchParams.category
                   ? 'text-white'
                   : 'bg-white hover:bg-gray-100'
               }`}
-              style={!searchParams.category ? { backgroundColor: '#214929' } : { color: '#214929' }}
+              style={!resolvedSearchParams.category ? { backgroundColor: '#214929' } : { color: '#214929' }}
             >
               Semua
             </Link>
@@ -160,11 +167,11 @@ export default async function BlogPage({ searchParams }) {
                 key={cat}
                 href={`/blog?category=${cat}`}
                 className={`px-4 py-2 rounded-full transition-colors ${
-                  searchParams.category === cat
+                  resolvedSearchParams.category === cat
                     ? 'text-white'
                     : 'bg-white hover:bg-gray-100'
                 }`}
-                style={searchParams.category === cat ? { backgroundColor: '#214929' } : { color: '#214929' }}
+                style={resolvedSearchParams.category === cat ? { backgroundColor: '#214929' } : { color: '#214929' }}
               >
                 {cat}
               </Link>
@@ -179,7 +186,7 @@ export default async function BlogPage({ searchParams }) {
               📝 Belum ada artikel
             </p>
             <p className="text-gray-600">
-              {searchParams.search || searchParams.category 
+              {resolvedSearchParams.search || resolvedSearchParams.category 
                 ? 'Tidak ada artikel yang cocok dengan pencarian Anda'
                 : 'Artikel akan segera hadir'}
             </p>
@@ -275,13 +282,13 @@ export default async function BlogPage({ searchParams }) {
             {Array.from({ length: pagination.pages }, (_, i) => i + 1).map(page => (
               <Link
                 key={page}
-                href={`/blog?page=${page}${searchParams.category ? `&category=${searchParams.category}` : ''}${searchParams.search ? `&search=${searchParams.search}` : ''}`}
+                href={`/blog?page=${page}${resolvedSearchParams.category ? `&category=${resolvedSearchParams.category}` : ''}${resolvedSearchParams.search ? `&search=${resolvedSearchParams.search}` : ''}`}
                 className={`px-4 py-2 rounded-md transition-colors ${
-                  (searchParams.page || '1') === page.toString()
+                  (resolvedSearchParams.page || '1') === page.toString()
                     ? 'text-white'
                     : 'bg-white hover:bg-gray-100'
                 }`}
-                style={(searchParams.page || '1') === page.toString() ? { backgroundColor: '#214929' } : { color: '#214929' }}
+                style={(resolvedSearchParams.page || '1') === page.toString() ? { backgroundColor: '#214929' } : { color: '#214929' }}
               >
                 {page}
               </Link>
@@ -289,6 +296,9 @@ export default async function BlogPage({ searchParams }) {
           </div>
         )}
       </div>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }

@@ -18,6 +18,9 @@ const poppins = Poppins({
 export const metadata = {
   title: 'Pisang Ijo Evi - Es Pisang Ijo Makassar',
   description: 'Website resmi Pisang Ijo Evi - Es Pisang Ijo khas Makassar yang lezat dan segar',
+  icons: {
+    icon: '/favicon.ico',
+  },
 }
 
 export default function RootLayout({ children }) {

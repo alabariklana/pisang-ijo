@@ -15,18 +15,27 @@ import {
   X
 } from 'lucide-react';
 import { toast } from 'sonner';
+import Footer from '@/components/Footer';
 
 export default function ProductDetailPage({ params }) {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [slug, setSlug] = useState(null);
   const router = useRouter();
 
+  // Unwrap params Promise
   useEffect(() => {
-    if (params.slug) {
-      fetchProduct(params.slug);
+    Promise.resolve(params).then((resolvedParams) => {
+      setSlug(resolvedParams.slug);
+    });
+  }, [params]);
+
+  useEffect(() => {
+    if (slug) {
+      fetchProduct(slug);
     }
-  }, [params.slug]);
+  }, [slug]);
 
   const fetchProduct = async (slug) => {
     try {
@@ -78,28 +87,31 @@ export default function ProductDetailPage({ params }) {
   return (
     <div className="min-h-screen bg-gradient-to-b from-green-50 to-white">
       {/* Navigation */}
-      <nav className="sticky top-0 z-50 bg-white shadow-md">
+      <nav className="sticky top-0 z-50" style={{ backgroundColor: '#EBDEC5', boxShadow: '0 4px 20px rgba(212, 175, 55, 0.15)' }}>
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <Link href="/" className="flex items-center space-x-2">
-              <div className="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center">
-                <span className="text-white text-2xl font-bold">PJ</span>
-              </div>
-              <span className="text-2xl font-bold text-green-700">Pisang Ijo Evi</span>
+              <img
+                src="https://storage.googleapis.com/biolink_pisjo/images/kekg4cgf_logo%20pisjo%20pendek.webp"
+                alt="Pisang Ijo Evi Logo"
+                className="h-12 w-auto"
+                style={{ filter: 'drop-shadow(0 2px 4px rgba(212, 175, 55, 0.3))' }}
+              />
+              <span className="text-2xl font-bold" style={{ fontFamily: 'var(--font-playfair), serif', color: '#214929', textShadow: '0 1px 2px rgba(212, 175, 55, 0.2)' }}>Pisang Ijo Evi</span>
             </Link>
             
             {/* Desktop Menu */}
             <div className="hidden md:flex space-x-6">
-              <Link href="/" className="text-gray-700 hover:text-green-600 transition">Home</Link>
-              <Link href="/tentang" className="text-gray-700 hover:text-green-600 transition">Tentang Kami</Link>
-              <Link href="/menu" className="text-green-600 font-semibold">Menu</Link>
-              <Link href="/cara-pemesanan" className="text-gray-700 hover:text-green-600 transition">Cara Pemesanan</Link>
-              <Link href="/kontak" className="text-gray-700 hover:text-green-600 transition">Kontak</Link>
+              <Link href="/" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }}>Home</Link>
+              <Link href="/tentang" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }}>Tentang Kami</Link>
+              <Link href="/menu" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }}>Menu</Link>
+              <Link href="/blog" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }}>Blog</Link>
+              <Link href="/kontak" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }}>Kontak</Link>
             </div>
             
             <div className="flex items-center gap-4">
               <Link href="/pesan" className="hidden md:block">
-                <Button className="bg-green-600 hover:bg-green-700">
+                <Button style={{ backgroundColor: '#214929', boxShadow: '0 4px 12px rgba(212, 175, 55, 0.3)' }} className="hover:opacity-90 transition-all hover:shadow-lg">
                   <ShoppingCart className="mr-2 h-4 w-4" />
                   Pesan Sekarang
                 </Button>
@@ -107,7 +119,8 @@ export default function ProductDetailPage({ params }) {
               
               {/* Mobile Menu Button */}
               <button 
-                className="md:hidden text-gray-700"
+                className="md:hidden"
+                style={{ color: '#214929' }}
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               >
                 {mobileMenuOpen ? <X className="h-6 w-6" /> : <MenuIcon className="h-6 w-6" />}
@@ -119,13 +132,13 @@ export default function ProductDetailPage({ params }) {
           {mobileMenuOpen && (
             <div className="md:hidden mt-4 pb-4 border-t pt-4">
               <div className="flex flex-col space-y-3">
-                <Link href="/" className="text-gray-700 hover:text-green-600 transition" onClick={() => setMobileMenuOpen(false)}>Home</Link>
-                <Link href="/tentang" className="text-gray-700 hover:text-green-600 transition" onClick={() => setMobileMenuOpen(false)}>Tentang Kami</Link>
-                <Link href="/menu" className="text-green-600 font-semibold" onClick={() => setMobileMenuOpen(false)}>Menu</Link>
-                <Link href="/cara-pemesanan" className="text-gray-700 hover:text-green-600 transition" onClick={() => setMobileMenuOpen(false)}>Cara Pemesanan</Link>
-                <Link href="/kontak" className="text-gray-700 hover:text-green-600 transition" onClick={() => setMobileMenuOpen(false)}>Kontak</Link>
+                <Link href="/" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }} onClick={() => setMobileMenuOpen(false)}>Home</Link>
+                <Link href="/tentang" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }} onClick={() => setMobileMenuOpen(false)}>Tentang Kami</Link>
+                <Link href="/menu" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }} onClick={() => setMobileMenuOpen(false)}>Menu</Link>
+                <Link href="/blog" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }} onClick={() => setMobileMenuOpen(false)}>Blog</Link>
+                <Link href="/kontak" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }} onClick={() => setMobileMenuOpen(false)}>Kontak</Link>
                 <Link href="/pesan" onClick={() => setMobileMenuOpen(false)}>
-                  <Button className="w-full bg-green-600 hover:bg-green-700">
+                  <Button className="w-full" style={{ backgroundColor: '#214929' }}>
                     <ShoppingCart className="mr-2 h-4 w-4" />
                     Pesan Sekarang
                   </Button>
@@ -296,14 +309,19 @@ export default function ProductDetailPage({ params }) {
       {/* Related Products / CTA Section */}
       <section className="py-12 px-4 bg-green-50">
         <div className="container mx-auto max-w-4xl text-center">
-          <h2 className="text-2xl md:text-3xl font-bold text-green-700 mb-4">
+          <h2 className="text-2xl md:text-3xl font-bold mb-4" style={{ color: '#214929' }}>
             Tertarik dengan produk lainnya?
           </h2>
           <p className="text-gray-600 mb-6">
             Lihat menu lengkap kami dan temukan favorit Anda
           </p>
           <Link href="/menu">
-            <Button size="lg" variant="outline" className="border-green-600 text-green-600 hover:bg-white">
+            <Button size="lg" variant="outline" style={{ 
+              borderColor: '#D4AF37', 
+              color: '#214929',
+              boxShadow: '0 3px 10px rgba(212, 175, 55, 0.2)',
+              borderWidth: '2px'
+            }} className="hover:bg-opacity-10 transition-all hover:shadow-md">
               Lihat Semua Menu
             </Button>
           </Link>
@@ -311,43 +329,7 @@ export default function ProductDetailPage({ params }) {
       </section>
 
       {/* Footer */}
-      <footer className="bg-green-900 text-white py-8 px-4">
-        <div className="container mx-auto max-w-6xl">
-          <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-8 mb-8">
-            <div>
-              <h3 className="font-bold text-lg mb-4">Pisang Ijo Evi</h3>
-              <p className="text-green-200 text-sm">Es Pisang Ijo Khas Makassar yang lezat dan menyegarkan</p>
-            </div>
-            <div>
-              <h3 className="font-bold text-lg mb-4">Menu</h3>
-              <ul className="space-y-2 text-sm">
-                <li><Link href="/" className="text-green-200 hover:text-white transition">Home</Link></li>
-                <li><Link href="/tentang" className="text-green-200 hover:text-white transition">Tentang Kami</Link></li>
-                <li><Link href="/menu" className="text-green-200 hover:text-white transition">Menu</Link></li>
-                <li><Link href="/pesan" className="text-green-200 hover:text-white transition">Pesan</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-bold text-lg mb-4">Informasi</h3>
-              <ul className="space-y-2 text-sm">
-                <li><Link href="/cara-pemesanan" className="text-green-200 hover:text-white transition">Cara Pemesanan</Link></li>
-                <li><Link href="/kontak" className="text-green-200 hover:text-white transition">Kontak</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-bold text-lg mb-4">Kontak</h3>
-              <ul className="space-y-2 text-sm text-green-200">
-                <li>Makassar, Sulawesi Selatan</li>
-                <li>+62 812-3456-7890</li>
-                <li>info@pisangijoevi.com</li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-green-800 pt-6 text-center text-sm text-green-200">
-            <p>&copy; 2025 Pisang Ijo Evi. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

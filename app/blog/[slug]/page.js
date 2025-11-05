@@ -2,21 +2,31 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { headers } from 'next/headers';
 import { connectToDatabase } from '@/lib/mongodb';
-import { Calendar, User, Eye, ArrowLeft, Share2, Facebook, Twitter, Mail } from 'lucide-react';
+import { Calendar, User, Eye, ArrowLeft, Facebook, Instagram } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
+import { optimizeImageUrl } from '@/lib/imageOptimizer';
+import FacebookComments from '@/components/FacebookComments';
 
 // Generate metadata for SEO
 function getBaseUrl() {
+  // First, check if NEXT_PUBLIC_APP_URL is set
+  if (process.env.NEXT_PUBLIC_APP_URL) {
+    return process.env.NEXT_PUBLIC_APP_URL;
+  }
+  
+  // Fallback to headers
   try {
     const h = headers();
     const getHeader = (key) =>
       typeof h?.get === 'function' ? h.get(key) : h?.[key] ?? h?.[key?.toLowerCase?.()] ?? undefined;
-    const host = getHeader('x-forwarded-host') || getHeader('host') || process.env.VERCEL_URL || 'localhost:3000';
+    const host = getHeader('x-forwarded-host') || getHeader('host') || 'localhost:3000';
     const proto = getHeader('x-forwarded-proto') || (process.env.NODE_ENV === 'production' ? 'https' : 'http');
     return `${proto}://${host}`;
   } catch {
-    return process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+    return 'http://localhost:3000';
   }
 }
 
@@ -395,62 +405,83 @@ export default async function BlogDetailPage({ params, searchParams }) {
             >
               {post.content || ''}
             </ReactMarkdown>
+
+            {/* Tags */}
+            {post.tags && post.tags.length > 0 && (
+              <div className="mt-8 pt-6 border-t border-gray-200">
+                <h3 className="text-base font-semibold mb-3" style={{ color: '#214929' }}>Tags:</h3>
+                <div className="flex flex-wrap gap-2">
+                  {post.tags.map(tag => (
+                    <span
+                      key={tag}
+                      className="px-3 py-1 rounded-full text-sm"
+                      style={{ backgroundColor: '#FCD900', color: '#214929' }}
+                    >
+                      #{tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Share icons inline */}
+            <div className="mt-8 pt-6 border-t border-gray-200 flex items-center gap-3">
+              <span className="text-sm font-medium" style={{ color: '#214929' }}>Share to:</span>
+              <a
+                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Bagikan ke Facebook"
+                className="h-8 w-8 rounded-full flex items-center justify-center text-white transition-opacity hover:opacity-85"
+                style={{ backgroundColor: '#1877F2' }}
+                title="Bagikan ke Facebook"
+              >
+                <Facebook size={16} />
+              </a>
+              <a
+                href={`https://api.whatsapp.com/send?text=${shareTitle}%20${encodeURIComponent(shareUrl)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Bagikan ke WhatsApp"
+                className="h-8 w-8 rounded-full flex items-center justify-center text-white transition-opacity hover:opacity-85"
+                style={{ backgroundColor: '#25D366' }}
+                title="Bagikan ke WhatsApp"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <path d="M20.52 3.48A11.86 11.86 0 0012.06 0C5.59 0 .35 5.16.35 11.56c0 2.04.54 4.02 1.57 5.77L0 24l6.86-1.8a11.9 11.9 0 005.2 1.23h.01c6.47 0 11.71-5.16 11.71-11.56 0-3.09-1.23-5.99-3.26-8.39zM12.06 21.3c-1.8 0-3.57-.48-5.13-1.38l-.37-.21-4.07 1.07 1.09-3.93-.24-.4A9.58 9.58 0 012.3 11.56c0-5.26 4.33-9.53 9.76-9.53 2.6 0 5.03 1 6.86 2.83a9.42 9.42 0 012.87 6.7c0 5.26-4.33 9.53-9.76 9.53zm5.52-7.23c-.3-.15-1.78-.88-2.06-.98-.28-.1-.49-.15-.69.15-.2.3-.79.98-.97 1.18-.18.2-.36.23-.66.08-.3-.15-1.26-.46-2.4-1.47-.89-.79-1.49-1.77-1.66-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.36.45-.54.15-.18.2-.3.3-.5.1-.23.05-.43-.03-.61-.08-.15-.69-1.66-.94-2.28-.25-.6-.51-.5-.69-.51h-.59c-.2 0-.51.08-.78.38-.27.3-1.03 1-1.03 2.44s1.05 2.84 1.2 3.04c.15.2 2.07 3.15 5.02 4.31.7.3 1.25.48 1.68.61.7.22 1.34.19 1.85.12.56-.08 1.78-.73 2.03-1.43.25-.7.25-1.3.17-1.43-.08-.13-.28-.2-.58-.35z" />
+                </svg>
+              </a>
+              <a
+                href={`https://www.instagram.com/`}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Bagikan ke Instagram"
+                className="h-8 w-8 rounded-full flex items-center justify-center text-white transition-opacity hover:opacity-85"
+                style={{ background: 'radial-gradient(30% 30% at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%)' }}
+                title="Buka Instagram"
+              >
+                <Instagram size={16} />
+              </a>
+            </div>
           </div>
 
-          {/* Tags */}
-          {post.tags && post.tags.length > 0 && (
-            <div className="mt-8">
-              <h3 className="text-lg font-bold mb-3" style={{ color: '#214929' }}>Tags:</h3>
-              <div className="flex flex-wrap gap-2">
-                {post.tags.map(tag => (
-                  <span
-                    key={tag}
-                    className="px-4 py-2 rounded-full text-sm"
-                    style={{ backgroundColor: '#FCD900', color: '#214929' }}
-                  >
-                    #{tag}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Share Buttons */}
+          {/* Facebook Comments Section */}
           <div className="mt-12 p-6 rounded-lg" style={{ backgroundColor: 'white' }}>
-            <h3 className="text-lg font-bold mb-4" style={{ color: '#214929' }}>
-              <Share2 size={20} className="inline mr-2" />
-              Bagikan Artikel Ini
+            <h3 className="text-2xl font-bold mb-6" style={{ color: '#214929', fontFamily: 'var(--font-playfair)' }}>
+              💬 Komentar
             </h3>
-            <div className="flex flex-wrap gap-3">
-              <a
-                href={`https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 px-4 py-2 rounded-md text-white transition-opacity hover:opacity-80"
-                style={{ backgroundColor: '#1877F2' }}
-              >
-                <Facebook size={18} />
-                <span>Facebook</span>
-              </a>
-              <a
-                href={`https://twitter.com/intent/tweet?text=${shareTitle}&url=${shareUrl}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 px-4 py-2 rounded-md text-white transition-opacity hover:opacity-80"
-                style={{ backgroundColor: '#1DA1F2' }}
-              >
-                <Twitter size={18} />
-                <span>Twitter</span>
-              </a>
-              <a
-                href={`mailto:?subject=${shareTitle}&body=Baca artikel ini: ${shareUrl}`}
-                className="flex items-center gap-2 px-4 py-2 rounded-md text-white transition-opacity hover:opacity-80"
-                style={{ backgroundColor: '#214929' }}
-              >
-                <Mail size={18} />
-                <span>Email</span>
-              </a>
-            </div>
+            <p className="text-sm text-gray-600 mb-4">
+              Silakan berbagi pendapat Anda tentang artikel ini. Login dengan Facebook untuk berkomentar.
+            </p>
+            <FacebookComments url={shareUrl} numPosts={10} />
           </div>
 
           {/* Back to Blog */}
