@@ -18,7 +18,7 @@ async function connect() {
 
 export async function GET(request, { params }) {
   try {
-    const { id } = params;
+    const { id } = await params;
     const db = await connect();
     const query = ObjectId.isValid(id) ? { _id: new ObjectId(id) } : { id };
     const item = await db.collection('products').findOne(query);
@@ -32,7 +32,7 @@ export async function GET(request, { params }) {
 
 export async function DELETE(request, { params }) {
   try {
-    const { id } = params;
+    const { id } = await params;
     const db = await connect();
     const query = ObjectId.isValid(id) ? { _id: new ObjectId(id) } : { id };
     const res = await db.collection('products').deleteOne(query);
@@ -46,7 +46,7 @@ export async function DELETE(request, { params }) {
 
 export async function PUT(request, { params }) {
   try {
-    const { id } = await Promise.resolve(params);
+    const { id } = await params;
     const body = await request.json();
     
     // Validate required fields

@@ -4,7 +4,7 @@ import { ObjectId } from 'mongodb';
 // GET - Fetch member detail
 export async function GET(req, { params }) {
   try {
-    const { id } = params;
+    const { id } = await params;
     const { db } = await connectToDatabase();
     
     // Get member
@@ -49,7 +49,7 @@ export async function GET(req, { params }) {
 // PATCH - Update member points
 export async function PATCH(req, { params }) {
   try {
-    const { id } = params;
+    const { id } = await params;
     const { points } = await req.json();
 
     if (typeof points !== 'number' || points < 0) {

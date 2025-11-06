@@ -18,7 +18,7 @@ async function connect() {
 
 export async function GET(request, { params }) {
   try {
-    const { id } = params;
+    const { id } = await params;
     
     if (!ObjectId.isValid(id)) {
       return NextResponse.json({ error: 'Invalid order ID' }, { status: 400 });
@@ -44,7 +44,7 @@ export async function GET(request, { params }) {
 
 export async function PATCH(request, { params }) {
   try {
-    const { id } = params;
+    const { id } = await params;
     
     if (!ObjectId.isValid(id)) {
       return NextResponse.json({ error: 'Invalid order ID' }, { status: 400 });
@@ -89,7 +89,7 @@ export async function PATCH(request, { params }) {
 
 export async function DELETE(request, { params }) {
   try {
-    const { id } = params;
+    const { id } = await params;
     
     if (!ObjectId.isValid(id)) {
       return NextResponse.json({ error: 'Invalid order ID' }, { status: 400 });
