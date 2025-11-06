@@ -32,15 +32,29 @@ export async function POST(req) {
             }
           }
         );
+        
+        // Send welcome back email
+        try {
+          await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/newsletter/send-welcome`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, isResubscribe: true })
+          });
+        } catch (emailError) {
+          console.warn('Welcome back email error:', emailError);
+        }
+        
         return Response.json({ 
           success: true,
-          message: 'Newsletter subscription reactivated!' 
+          message: 'Selamat datang kembali! Langganan newsletter Anda telah diaktifkan kembali.' 
         });
       }
       
+      // Email already active - return 200 instead of 409 for better UX
       return Response.json({ 
-        message: 'Email sudah terdaftar di newsletter kami' 
-      }, { status: 409 });
+        success: true,
+        message: 'Email Anda sudah terdaftar dan aktif di newsletter kami. Terima kasih!' 
+      }, { status: 200 });
     }
 
     // Add new subscriber

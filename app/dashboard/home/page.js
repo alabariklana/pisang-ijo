@@ -17,7 +17,9 @@ import {
   CheckCircle,
   Truck,
   Mail,
-  FileText
+  FileText,
+  Settings,
+  Gift
 } from 'lucide-react';
 import { toast } from 'sonner';
 import Link from 'next/link';
@@ -259,7 +261,7 @@ export default function DashboardHome() {
             <CardDescription>Kelola bisnis Anda dengan mudah</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
               <Link href="/dashboard/products" className="block">
                 <Button variant="outline" className="w-full h-20 flex flex-col gap-2">
                   <Package className="w-6 h-6" />
@@ -288,6 +290,12 @@ export default function DashboardHome() {
                 <Button variant="outline" className="w-full h-20 flex flex-col gap-2">
                   <Mail className="w-6 h-6" />
                   <span className="text-sm">Newsletter</span>
+                </Button>
+              </Link>
+              <Link href="/dashboard/settings" className="block">
+                <Button variant="outline" className="w-full h-20 flex flex-col gap-2 border-green-300 hover:bg-green-50">
+                  <Gift className="w-6 h-6 text-green-600" />
+                  <span className="text-sm text-green-700 font-medium">Promo & Poin</span>
                 </Button>
               </Link>
             </div>

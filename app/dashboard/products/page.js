@@ -5,13 +5,14 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Trash2, Upload, ArrowLeft } from 'lucide-react';
+import { Trash2, Upload, ArrowLeft, Edit } from 'lucide-react';
 import { toast } from 'sonner';
 
 export default function DashboardProductsPage() {
   const [products, setProducts] = useState([]);
   const [loadingProducts, setLoadingProducts] = useState(false);
 
+  // Form states for ADD
   const [name, setName] = useState('');
   const [category, setCategory] = useState('');
   const [price, setPrice] = useState('');
@@ -19,8 +20,18 @@ export default function DashboardProductsPage() {
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
 
+  // Edit mode states
+  const [editingProduct, setEditingProduct] = useState(null); // Product being edited
+  const [editName, setEditName] = useState('');
+  const [editCategory, setEditCategory] = useState('');
+  const [editPrice, setEditPrice] = useState('');
+  const [editDescription, setEditDescription] = useState('');
+  const [editImageFile, setEditImageFile] = useState(null);
+  const [editImagePreview, setEditImagePreview] = useState(null);
+
   const [submitting, setSubmitting] = useState(false);
   const fileInputRef = useRef();
+  const editFileInputRef = useRef();
   const router = useRouter();
 
   useEffect(() => {
@@ -28,6 +39,7 @@ export default function DashboardProductsPage() {
     // cleanup preview on unmount
     return () => {
       if (imagePreview) URL.revokeObjectURL(imagePreview);
+      if (editImagePreview) URL.revokeObjectURL(editImagePreview);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -64,6 +76,18 @@ export default function DashboardProductsPage() {
     }
     if (f) {
       setImagePreview(URL.createObjectURL(f));
+    }
+  };
+
+  const handleEditFileChange = (e) => {
+    const f = e.target.files?.[0] ?? null;
+    setEditImageFile(f);
+    if (editImagePreview) {
+      URL.revokeObjectURL(editImagePreview);
+      setEditImagePreview(null);
+    }
+    if (f) {
+      setEditImagePreview(URL.createObjectURL(f));
     }
   };
 
@@ -150,6 +174,80 @@ export default function DashboardProductsPage() {
     } catch (err) {
       console.error(err);
       toast.error('Gagal menghapus produk');
+    }
+  };
+
+  const handleEdit = (product) => {
+    const id = product.id ?? product._id ?? product._key;
+    setEditingProduct({ ...product, id });
+    setEditName(product.name || '');
+    setEditCategory(product.category || '');
+    setEditPrice(String(product.price || ''));
+    setEditDescription(product.description || '');
+    setEditImageFile(null);
+    if (editImagePreview) {
+      URL.revokeObjectURL(editImagePreview);
+    }
+    setEditImagePreview(null);
+  };
+
+  const handleCancelEdit = () => {
+    setEditingProduct(null);
+    setEditName('');
+    setEditCategory('');
+    setEditPrice('');
+    setEditDescription('');
+    setEditImageFile(null);
+    if (editImagePreview) {
+      URL.revokeObjectURL(editImagePreview);
+      setEditImagePreview(null);
+    }
+    if (editFileInputRef.current) editFileInputRef.current.value = '';
+  };
+
+  const handleUpdateProduct = async (e) => {
+    e?.preventDefault();
+    if (!editName || !editCategory || !editPrice) {
+      toast.error('Lengkapi nama, kategori, dan harga.');
+      return;
+    }
+    setSubmitting(true);
+    try {
+      let imageUrl = editingProduct.imageUrl || '';
+      
+      // Upload new image if selected
+      if (editImageFile) {
+        const newUrl = await uploadImage(editImageFile);
+        if (newUrl) imageUrl = newUrl;
+      }
+
+      const payload = {
+        name: editName,
+        category: editCategory,
+        price: Number(editPrice),
+        description: editDescription,
+        imageUrl,
+      };
+
+      const res = await fetch(`/api/products/${editingProduct.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) {
+        const txt = await res.text().catch(() => '');
+        throw new Error('Gagal mengupdate produk: ' + txt);
+      }
+
+      toast.success('Produk berhasil diupdate');
+      handleCancelEdit();
+      await fetchProducts();
+    } catch (err) {
+      console.error(err);
+      toast.error(err?.message || 'Gagal mengupdate produk');
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -240,12 +338,10 @@ export default function DashboardProductsPage() {
                 {products.map((p) => {
                   const id = p.id ?? p._id ?? p._key;
                   return (
-                    <div key={id} className="flex items-center justify-between p-3 border rounded-md">
+                    <div key={id} className="flex items-center justify-between p-3 border rounded-md hover:bg-gray-50 transition-colors">
                       <div className="flex items-center gap-3">
                         <div className="w-20 h-20 bg-gray-100 rounded-md overflow-hidden flex items-center justify-center">
                           {p.imageUrl ? (
-                            // imageUrl may be absolute or relative
-                            // prefer using <img> directly; optimize later
                             <img src={p.imageUrl} alt={p.name} className="w-full h-full object-cover" />
                           ) : (
                             <span className="text-sm text-gray-500">No Image</span>
@@ -254,9 +350,16 @@ export default function DashboardProductsPage() {
                         <div>
                           <div className="font-semibold text-sm">{p.name}</div>
                           <div className="text-xs text-gray-500">{p.category} — Rp {Number(p.price || 0).toLocaleString('id-ID')}</div>
+                          {p.description && (
+                            <div className="text-xs text-gray-400 mt-1 line-clamp-2">{p.description}</div>
+                          )}
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
+                        <Button size="sm" variant="outline" onClick={() => handleEdit(p)} className="flex items-center gap-1">
+                          <Edit className="w-4 h-4" />
+                          <span className="hidden sm:inline">Edit</span>
+                        </Button>
                         <Button size="sm" variant="destructive" onClick={() => handleDelete(id)}>
                           <Trash2 className="w-4 h-4" />
                         </Button>
@@ -268,6 +371,132 @@ export default function DashboardProductsPage() {
             )}
           </CardContent>
         </Card>
+
+        {/* Edit Modal/Card */}
+        {editingProduct && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+            <Card className="w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+              <CardHeader>
+                <CardTitle>Edit Produk</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <form onSubmit={handleUpdateProduct} className="space-y-4">
+                  <div>
+                    <label htmlFor="edit-name" className="text-sm font-medium text-gray-700">Nama Produk</label>
+                    <Input 
+                      id="edit-name" 
+                      value={editName} 
+                      onChange={(e) => setEditName(e.target.value)} 
+                      placeholder="Pisang ijo Paket Keluarga" 
+                      required 
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="edit-category" className="text-sm font-medium text-gray-700">Kategori</label>
+                    <Input 
+                      id="edit-category" 
+                      value={editCategory} 
+                      onChange={(e) => setEditCategory(e.target.value)} 
+                      placeholder="Paket Frozen" 
+                      required 
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="edit-price" className="text-sm font-medium text-gray-700">Harga (IDR)</label>
+                    <Input 
+                      id="edit-price" 
+                      type="number" 
+                      value={editPrice} 
+                      onChange={(e) => setEditPrice(e.target.value)} 
+                      placeholder="50000" 
+                      required 
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="edit-desc" className="text-sm font-medium text-gray-700">Deskripsi</label>
+                    <textarea
+                      id="edit-desc"
+                      value={editDescription}
+                      onChange={(e) => setEditDescription(e.target.value)}
+                      rows={3}
+                      className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-green-500 focus:ring-green-500"
+                      placeholder="Paket 3 Porsi pisang ijo frozen lengkap dengan sausnya"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-sm font-medium text-gray-700 block mb-1">Gambar Produk</label>
+                    
+                    {/* Current Image */}
+                    {editingProduct.imageUrl && !editImagePreview && (
+                      <div className="mb-3">
+                        <p className="text-xs text-gray-500 mb-2">Gambar saat ini:</p>
+                        <img 
+                          src={editingProduct.imageUrl} 
+                          alt="Current" 
+                          className="w-36 h-36 object-cover rounded-md border" 
+                        />
+                      </div>
+                    )}
+
+                    {/* New Image Preview */}
+                    {editImagePreview && (
+                      <div className="mb-3">
+                        <p className="text-xs text-gray-500 mb-2">Gambar baru:</p>
+                        <img 
+                          src={editImagePreview} 
+                          alt="preview" 
+                          className="w-36 h-36 object-cover rounded-md border" 
+                        />
+                      </div>
+                    )}
+
+                    <div className="flex items-center gap-3">
+                      <input
+                        ref={editFileInputRef}
+                        type="file"
+                        accept="image/*"
+                        onChange={handleEditFileChange}
+                        className="hidden"
+                      />
+                      <Button 
+                        type="button" 
+                        onClick={() => editFileInputRef.current?.click()} 
+                        variant="outline" 
+                        className="flex items-center gap-2"
+                      >
+                        <Upload className="w-4 h-4" /> 
+                        {editImagePreview ? 'Ganti Gambar' : 'Upload Gambar Baru'}
+                      </Button>
+                    </div>
+                    <p className="text-xs text-gray-500 mt-1">Kosongkan jika tidak ingin mengubah gambar</p>
+                  </div>
+
+                  <div className="flex gap-3 pt-4">
+                    <Button 
+                      type="submit" 
+                      className="bg-green-600 hover:bg-green-700" 
+                      disabled={submitting}
+                    >
+                      {submitting ? 'Menyimpan...' : 'Simpan Perubahan'}
+                    </Button>
+                    <Button 
+                      type="button" 
+                      variant="outline" 
+                      onClick={handleCancelEdit}
+                      disabled={submitting}
+                    >
+                      Batal
+                    </Button>
+                  </div>
+                </form>
+              </CardContent>
+            </Card>
+          </div>
+        )}
       </div>
     </div>
   );

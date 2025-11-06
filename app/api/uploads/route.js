@@ -40,7 +40,7 @@ export async function POST(request) {
     const bucket = storage.bucket(bucketName);
     const blob = bucket.file(filename);
     
-    // Upload file tanpa public: true (karena bucket menggunakan Uniform Bucket-Level Access)
+    // Upload file tanpa ACL (UBLA aktif, jadi tidak boleh set ACL atau makePublic)
     await blob.save(buf, {
       metadata: {
         contentType: file.type || 'image/jpeg',
@@ -48,11 +48,19 @@ export async function POST(request) {
       },
     });
 
-    // Make the file publicly accessible (compatible dengan Uniform Bucket-Level Access)
-    await blob.makePublic();
-
-    // Get public URL
-    const imageUrl = `https://storage.googleapis.com/${bucketName}/${filename}`;
+    // Tentukan URL hasil upload
+    // Opsi A (disarankan): Bucket sudah diberi IAM public read (allUsers -> Storage Object Viewer)
+    // Set env GCS_PUBLIC_READ=true agar kita pakai URL publik langsung
+    let imageUrl;
+    if (String(process.env.GCS_PUBLIC_READ).toLowerCase() === 'true') {
+      imageUrl = `https://storage.googleapis.com/${bucketName}/${filename}`;
+    } else {
+      // Opsi B: Jika bucket tidak public, gunakan Signed URL (v4, max 7 hari)
+      // Catatan: Untuk akses jangka panjang, lebih baik jadikan bucket public object viewer
+      const expires = Date.now() + 7 * 24 * 60 * 60 * 1000; // 7 hari
+      const [signedUrl] = await blob.getSignedUrl({ action: 'read', version: 'v4', expires });
+      imageUrl = signedUrl;
+    }
     
     return NextResponse.json({ 
       success: true, 

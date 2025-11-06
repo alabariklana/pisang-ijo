@@ -102,16 +102,16 @@ export default function ProductDetailPage({ params }) {
             
             {/* Desktop Menu */}
             <div className="hidden md:flex space-x-6">
-              <Link href="/" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }}>Home</Link>
-              <Link href="/tentang" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }}>Tentang Kami</Link>
-              <Link href="/menu" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }}>Menu</Link>
-              <Link href="/blog" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }}>Blog</Link>
-              <Link href="/kontak" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }}>Kontak</Link>
+              <Link href="/" className="transition-all duration-200 hover:opacity-80 hover:scale-105 active:scale-95" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }}>Home</Link>
+              <Link href="/tentang" className="transition-all duration-200 hover:opacity-80 hover:scale-105 active:scale-95" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }}>Tentang Kami</Link>
+              <Link href="/menu" className="transition-all duration-200 hover:opacity-80 hover:scale-105 active:scale-95" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }}>Menu</Link>
+              <Link href="/blog" className="transition-all duration-200 hover:opacity-80 hover:scale-105 active:scale-95" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }}>Blog</Link>
+              <Link href="/kontak" className="transition-all duration-200 hover:opacity-80 hover:scale-105 active:scale-95" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }}>Kontak</Link>
             </div>
             
             <div className="flex items-center gap-4">
               <Link href="/pesan" className="hidden md:block">
-                <Button style={{ backgroundColor: '#214929', boxShadow: '0 4px 12px rgba(212, 175, 55, 0.3)' }} className="hover:opacity-90 transition-all hover:shadow-lg">
+                <Button style={{ backgroundColor: '#214929', boxShadow: '0 4px 12px rgba(212, 175, 55, 0.3)' }} className="hover:opacity-90 transition-all duration-300 hover:shadow-lg hover:scale-105 active:scale-95">
                   <ShoppingCart className="mr-2 h-4 w-4" />
                   Pesan Sekarang
                 </Button>
@@ -132,13 +132,13 @@ export default function ProductDetailPage({ params }) {
           {mobileMenuOpen && (
             <div className="md:hidden mt-4 pb-4 border-t pt-4">
               <div className="flex flex-col space-y-3">
-                <Link href="/" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }} onClick={() => setMobileMenuOpen(false)}>Home</Link>
-                <Link href="/tentang" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }} onClick={() => setMobileMenuOpen(false)}>Tentang Kami</Link>
-                <Link href="/menu" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }} onClick={() => setMobileMenuOpen(false)}>Menu</Link>
-                <Link href="/blog" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }} onClick={() => setMobileMenuOpen(false)}>Blog</Link>
-                <Link href="/kontak" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }} onClick={() => setMobileMenuOpen(false)}>Kontak</Link>
+                <Link href="/" className="transition-all duration-200 hover:opacity-80 hover:scale-105 active:scale-95" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }} onClick={() => setMobileMenuOpen(false)}>Home</Link>
+                <Link href="/tentang" className="transition-all duration-200 hover:opacity-80 hover:scale-105 active:scale-95" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }} onClick={() => setMobileMenuOpen(false)}>Tentang Kami</Link>
+                <Link href="/menu" className="transition-all duration-200 hover:opacity-80 hover:scale-105 active:scale-95" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }} onClick={() => setMobileMenuOpen(false)}>Menu</Link>
+                <Link href="/blog" className="transition-all duration-200 hover:opacity-80 hover:scale-105 active:scale-95" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }} onClick={() => setMobileMenuOpen(false)}>Blog</Link>
+                <Link href="/kontak" className="transition-all duration-200 hover:opacity-80 hover:scale-105 active:scale-95" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }} onClick={() => setMobileMenuOpen(false)}>Kontak</Link>
                 <Link href="/pesan" onClick={() => setMobileMenuOpen(false)}>
-                  <Button className="w-full" style={{ backgroundColor: '#214929' }}>
+                  <Button className="w-full transition-all duration-300 hover:scale-105 active:scale-95" style={{ backgroundColor: '#214929' }}>
                     <ShoppingCart className="mr-2 h-4 w-4" />
                     Pesan Sekarang
                   </Button>
@@ -277,8 +277,9 @@ export default function ProductDetailPage({ params }) {
                 <Button 
                   onClick={handleOrderClick}
                   disabled={!product.available}
-                  className="flex-1 bg-green-600 hover:bg-green-700 h-12 text-base"
+                  className="flex-1 bg-green-600 hover:bg-green-700 h-12 text-base transition-all duration-300 hover:scale-105 active:scale-95"
                   size="lg"
+                  style={{ boxShadow: '0 4px 12px rgba(212, 175, 55, 0.3)' }}
                 >
                   <ShoppingCart className="mr-2 h-5 w-5" />
                   {product.available ? 'Pesan Sekarang' : 'Stok Habis'}
@@ -286,8 +287,14 @@ export default function ProductDetailPage({ params }) {
                 <Link href="/kontak" className="flex-1">
                   <Button 
                     variant="outline" 
-                    className="w-full border-green-600 text-green-600 hover:bg-green-50 h-12 text-base"
+                    className="w-full border-green-600 text-green-600 hover:bg-green-50 h-12 text-base transition-all duration-300 hover:scale-105 active:scale-95"
                     size="lg"
+                    style={{ 
+                      borderColor: '#D4AF37',
+                      color: '#214929',
+                      borderWidth: '2px',
+                      boxShadow: '0 3px 10px rgba(212, 175, 55, 0.2)'
+                    }}
                   >
                     Hubungi Kami
                   </Button>
@@ -321,7 +328,7 @@ export default function ProductDetailPage({ params }) {
               color: '#214929',
               boxShadow: '0 3px 10px rgba(212, 175, 55, 0.2)',
               borderWidth: '2px'
-            }} className="hover:bg-opacity-10 transition-all hover:shadow-md">
+            }} className="hover:bg-opacity-10 transition-all duration-300 hover:shadow-md hover:scale-105 active:scale-95">
               Lihat Semua Menu
             </Button>
           </Link>

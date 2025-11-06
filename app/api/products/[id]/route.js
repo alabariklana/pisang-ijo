@@ -43,3 +43,47 @@ export async function DELETE(request, { params }) {
     return NextResponse.json({ error: 'Server error' }, { status: 500 });
   }
 }
+
+export async function PUT(request, { params }) {
+  try {
+    const { id } = await Promise.resolve(params);
+    const body = await request.json();
+    
+    // Validate required fields
+    if (!body.name || !body.category || body.price === undefined) {
+      return NextResponse.json(
+        { error: 'Missing required fields: name, category, price' }, 
+        { status: 400 }
+      );
+    }
+
+    const db = await connect();
+    const query = ObjectId.isValid(id) ? { _id: new ObjectId(id) } : { id };
+    
+    const updateData = {
+      name: body.name,
+      category: body.category,
+      price: Number(body.price),
+      description: body.description || '',
+      imageUrl: body.imageUrl || '',
+      updatedAt: new Date(),
+    };
+
+    const result = await db.collection('products').updateOne(
+      query,
+      { $set: updateData }
+    );
+
+    if (result.matchedCount === 0) {
+      return NextResponse.json({ error: 'Product not found' }, { status: 404 });
+    }
+
+    return NextResponse.json({ ok: true, updated: result.modifiedCount });
+  } catch (err) {
+    console.error('PUT /api/products/[id] error', err);
+    return NextResponse.json(
+      { error: 'Server error', detail: err?.message ?? null }, 
+      { status: 500 }
+    );
+  }
+}

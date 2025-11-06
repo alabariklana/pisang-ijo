@@ -135,12 +135,26 @@ export default function Home() {
       const result = await res.json();
       
       if (res.ok) {
-        toast.success('✅ Berhasil! Cek email Anda untuk konfirmasi newsletter');
-        setEmail('');
+        if (result.message.includes('sudah terdaftar')) {
+          // Already subscribed
+          toast.info('📧 ' + result.message);
+        } else if (result.message.includes('kembali')) {
+          // Resubscribed
+          toast.success('🎉 ' + result.message);
+          setEmail('');
+        } else {
+          // New subscription
+          toast.success('✅ ' + result.message);
+          setEmail('');
+        }
+      } else if (res.status === 409) {
+        // Conflict - email already subscribed (fallback)
+        toast.info('📧 ' + (result.message || 'Email sudah terdaftar di newsletter kami'));
       } else {
-        toast.info(result.message || 'Email sudah terdaftar');
+        toast.error(result.message || 'Gagal berlangganan, silakan coba lagi');
       }
     } catch (error) {
+      console.error('Newsletter error:', error);
       toast.error('Gagal berlangganan, silakan coba lagi');
     } finally {
       setLoading(false);
@@ -604,8 +618,8 @@ export default function Home() {
               <CardContent className="pt-6">
                 <Phone className="h-12 w-12 mx-auto mb-4 transition-transform duration-300 hover:scale-110 hover:rotate-12" style={{ color: '#D4AF37' }} />
                 <h3 className="font-semibold text-lg mb-2" style={{ color: '#214929' }}>Telepon</h3>
-                <a href="tel:+6281234567890" className="text-gray-600 hover:text-green-600 transition-colors">
-                  +62 812-3456-7890
+                <a href="tel:+6282260889787" className="text-gray-600 hover:text-green-600 transition-colors">
+                  +62 822-6088-9787
                 </a>
               </CardContent>
             </Card>
@@ -616,8 +630,8 @@ export default function Home() {
               <CardContent className="pt-6">
                 <Mail className="h-12 w-12 mx-auto mb-4 transition-transform duration-300 hover:scale-110 hover:rotate-12" style={{ color: '#D4AF37' }} />
                 <h3 className="font-semibold text-lg mb-2" style={{ color: '#214929' }}>Email</h3>
-                <a href="mailto:info@pisangijoevi.com" className="text-gray-600 hover:text-green-600 transition-colors">
-                  info@pisangijoevi.com
+                <a href="mailto:pisangijo@cateringsamarasa.com" className="text-gray-600 hover:text-green-600 transition-colors">
+                  pisangijo@cateringsamarasa.com
                 </a>
               </CardContent>
             </Card>

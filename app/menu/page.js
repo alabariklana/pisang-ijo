@@ -61,16 +61,16 @@ export default function MenuPage() {
             
             {/* Desktop Menu */}
             <div className="hidden md:flex space-x-6">
-              <Link href="/" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }}>Home</Link>
-              <Link href="/tentang" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }}>Tentang Kami</Link>
-              <Link href="/menu" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }}>Menu</Link>
-              <Link href="/blog" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }}>Blog</Link>
-              <Link href="/kontak" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }}>Kontak</Link>
+              <Link href="/" className="transition-all duration-200 hover:opacity-80 hover:scale-105 active:scale-95" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }}>Home</Link>
+              <Link href="/tentang" className="transition-all duration-200 hover:opacity-80 hover:scale-105 active:scale-95" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }}>Tentang Kami</Link>
+              <Link href="/menu" className="transition-all duration-200 hover:opacity-80 hover:scale-105 active:scale-95" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }}>Menu</Link>
+              <Link href="/blog" className="transition-all duration-200 hover:opacity-80 hover:scale-105 active:scale-95" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }}>Blog</Link>
+              <Link href="/kontak" className="transition-all duration-200 hover:opacity-80 hover:scale-105 active:scale-95" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }}>Kontak</Link>
             </div>
             
             <div className="flex items-center gap-4">
               <Link href="/pesan" className="hidden md:block">
-                <Button style={{ backgroundColor: '#214929', boxShadow: '0 4px 12px rgba(212, 175, 55, 0.3)' }} className="hover:opacity-90 transition-all hover:shadow-lg">
+                <Button style={{ backgroundColor: '#214929', boxShadow: '0 4px 12px rgba(212, 175, 55, 0.3)' }} className="hover:opacity-90 transition-all duration-300 hover:shadow-lg hover:scale-105 active:scale-95">
                   <ShoppingCart className="mr-2 h-4 w-4" />
                   Pesan Sekarang
                 </Button>
@@ -91,13 +91,13 @@ export default function MenuPage() {
           {mobileMenuOpen && (
             <div className="md:hidden mt-4 pb-4 border-t pt-4">
               <div className="flex flex-col space-y-3">
-                <Link href="/" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }} onClick={() => setMobileMenuOpen(false)}>Home</Link>
-                <Link href="/tentang" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }} onClick={() => setMobileMenuOpen(false)}>Tentang Kami</Link>
-                <Link href="/menu" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }} onClick={() => setMobileMenuOpen(false)}>Menu</Link>
-                <Link href="/blog" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }} onClick={() => setMobileMenuOpen(false)}>Blog</Link>
-                <Link href="/kontak" className="transition hover:opacity-80" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }} onClick={() => setMobileMenuOpen(false)}>Kontak</Link>
+                <Link href="/" className="transition-all duration-200 hover:opacity-80 hover:scale-105 active:scale-95" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }} onClick={() => setMobileMenuOpen(false)}>Home</Link>
+                <Link href="/tentang" className="transition-all duration-200 hover:opacity-80 hover:scale-105 active:scale-95" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }} onClick={() => setMobileMenuOpen(false)}>Tentang Kami</Link>
+                <Link href="/menu" className="transition-all duration-200 hover:opacity-80 hover:scale-105 active:scale-95" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }} onClick={() => setMobileMenuOpen(false)}>Menu</Link>
+                <Link href="/blog" className="transition-all duration-200 hover:opacity-80 hover:scale-105 active:scale-95" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }} onClick={() => setMobileMenuOpen(false)}>Blog</Link>
+                <Link href="/kontak" className="transition-all duration-200 hover:opacity-80 hover:scale-105 active:scale-95" style={{ fontFamily: 'var(--font-poppins), sans-serif', fontWeight: 500, color: '#214929' }} onClick={() => setMobileMenuOpen(false)}>Kontak</Link>
                 <Link href="/pesan" onClick={() => setMobileMenuOpen(false)}>
-                  <Button className="w-full" style={{ backgroundColor: '#214929' }}>
+                  <Button className="w-full transition-all duration-300 hover:scale-105 active:scale-95" style={{ backgroundColor: '#214929' }}>
                     <ShoppingCart className="mr-2 h-4 w-4" />
                     Pesan Sekarang
                   </Button>
@@ -140,14 +140,14 @@ export default function MenuPage() {
                 const key = product._id ?? product.id ?? product.slug ?? `${product.name}-${idx}`;
                 const imgSrc = product.imageUrl ?? product.image ?? (Array.isArray(product.photos) ? product.photos[0] : null);
                 return (
-                  <Card key={String(key)} className="transition-all hover:scale-105" style={{ 
+                  <Card key={String(key)} className="transition-all duration-300 hover:scale-105 hover:shadow-2xl active:scale-100 cursor-pointer" style={{ 
                     boxShadow: '0 4px 16px rgba(212, 175, 55, 0.2), 0 2px 8px rgba(33, 73, 41, 0.1)',
                     border: '1px solid rgba(212, 175, 55, 0.1)'
                   }} id={product.slug ?? key}>
                     <CardHeader>
-                      <div className="h-48 md:h-64 bg-gray-200 rounded-md mb-4 overflow-hidden" style={{ boxShadow: 'inset 0 2px 8px rgba(212, 175, 55, 0.15)' }}>
+                      <div className="h-48 md:h-64 bg-gray-200 rounded-md mb-4 overflow-hidden transition-transform duration-300 hover:scale-105" style={{ boxShadow: 'inset 0 2px 8px rgba(212, 175, 55, 0.15)' }}>
                         {imgSrc ? (
-                          <img src={imgSrc} alt={product.name} className="w-full h-full object-cover" />
+                          <img src={imgSrc} alt={product.name} className="w-full h-full object-cover transition-transform duration-500 hover:scale-110" />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-green-100 to-green-200">
                             <span className="text-green-700 text-5xl md:text-6xl">🍌</span>
@@ -176,7 +176,7 @@ export default function MenuPage() {
                     </CardContent>
                     <CardFooter className="flex gap-2">
                       <Link href={`/menu/${product.slug ?? key}`} className="flex-1">
-                        <Button variant="outline" className="w-full" style={{ 
+                        <Button variant="outline" className="w-full transition-all duration-300 hover:scale-105 active:scale-95" style={{ 
                           borderColor: '#D4AF37',
                           color: '#214929',
                           borderWidth: '2px'
@@ -185,7 +185,7 @@ export default function MenuPage() {
                         </Button>
                       </Link>
                       <Link href="/pesan" className="flex-1">
-                        <Button className="w-full" style={{ backgroundColor: '#214929' }} disabled={!product.available}>
+                        <Button className="w-full transition-all duration-300 hover:scale-105 active:scale-95" style={{ backgroundColor: '#214929' }} disabled={!product.available}>
                           {product.available ? 'Pesan' : 'Habis'}
                         </Button>
                       </Link>
@@ -224,7 +224,7 @@ export default function MenuPage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/pesan">
-                <Button size="lg" className="w-full sm:w-auto" style={{ 
+                <Button size="lg" className="w-full sm:w-auto transition-all duration-300 hover:scale-105 active:scale-95" style={{ 
                   backgroundColor: '#214929',
                   boxShadow: '0 4px 16px rgba(212, 175, 55, 0.35)'
                 }}>
@@ -233,7 +233,7 @@ export default function MenuPage() {
                 </Button>
               </Link>
               <Link href="/kontak">
-                <Button size="lg" variant="outline" className="w-full sm:w-auto" style={{ 
+                <Button size="lg" variant="outline" className="w-full sm:w-auto transition-all duration-300 hover:scale-105 active:scale-95" style={{ 
                   borderColor: '#D4AF37',
                   color: '#214929',
                   boxShadow: '0 3px 10px rgba(212, 175, 55, 0.2)',
